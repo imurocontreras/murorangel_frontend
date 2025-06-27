@@ -102,12 +102,13 @@
       <p class="text-gray-text mb-4 md:mb-6">
         Reach out at <a href="mailto:customersupport@murorangel.com" class="text-gold underline">customersupport@murorangel.com</a> or use the form below.
       </p>
-      <form action="https://polite-coast-06f635f1e.2.azurestaticapps.net" method="POST" class="text-left space-y-4">
-        <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 border border-gray-600 rounded bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold" />
-        <input type="email" name="_replyto" placeholder="Your Email" required class="w-full p-3 border border-gray-600 rounded bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold" />
+      <form id="contact-form" class="text-left space-y-4">
+        <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 border border-gray-600 rounded bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold">
+        <input type="email" name="_replyto" placeholder="Your Email" required class="w-full p-3 border border-gray-600 rounded bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold">
         <textarea name="message" placeholder="How can we help?" required class="w-full p-3 border border-gray-600 rounded min-h-[120px] resize-y bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold"></textarea>
         <button type="submit" class="bg-gold text-navy font-semibold px-6 py-3 rounded hover:opacity-90 transition w-full md:w-auto">Send Message</button>
       </form>
+      <div id="form-status" class="mt-4 text-center"></div>
     </div>
   </section>
 
@@ -158,5 +159,34 @@
     });
   </script>
 
+  <!-- Contact Form Submission Script -->
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const apiUrl = 'https://murorangel-backend-a6bjdwhwahcfggf3.canadacentral-01.azurewebsites.net/contact';
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+        const statusDiv = document.getElementById('form-status');
+        if (result.success) {
+          statusDiv.textContent = 'Message sent successfully!';
+          statusDiv.className = 'mt-4 text-green-400 text-center';
+          form.reset();
+        } else {
+          statusDiv.textContent = 'Error: ' + (result.error || 'Could not send message.');
+          statusDiv.className = 'mt-4 text-red-400 text-center';
+        }
+      } catch (err) {
+        document.getElementById('form-status').textContent = 'Network error. Try again later.';
+        document.getElementById('form-status').className = 'mt-4 text-red-400 text-center';
+      }
+    });
+  </script>
 </body>
 </html>
