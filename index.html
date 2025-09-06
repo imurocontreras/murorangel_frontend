@@ -30,12 +30,8 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400&family=Radley&display=swap" rel="stylesheet" />
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    section {
-      scroll-snap-align: start;
-    }
+    html { scroll-behavior: smooth; }
+    section { scroll-snap-align: start; }
   </style>
 </head>
 <body class="bg-light-tan text-dark-grey font-poppins leading-relaxed scroll-smooth snap-y snap-mandatory overflow-y-scroll min-h-screen">
@@ -122,9 +118,11 @@
     <div class="w-full max-w-xl md:max-w-2xl text-center px-4 space-y-8">
       <h2 class="text-2xl sm:text-3xl md:text-4xl font-montserrat font-bold text-dark-brown mb-2">Contact</h2>
       <p class="text-dark-grey mb-4 md:mb-6">
-        Reach out at <a href="mailto:customersupport@murorangel.com" class="text-primary underline">customersupport@muroconsultingservices.com</a> or use the form below.
+        Reach out at
+        <a href="mailto:customersupport@muroservices.com" class="text-primary underline">customersupport@muroservices.com</a>
+        or use the form below.
       </p>
-      <form id="contact-form" class="text-left space-y-4">
+      <form id="contact-form" class="text-left space-y-4" novalidate>
         <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 border border-dark-brown rounded bg-transparent text-dark-brown placeholder-dark-grey focus:outline-none focus:ring-2 focus:ring-primary">
         <input type="email" name="_replyto" placeholder="Your Email" required class="w-full p-3 border border-dark-brown rounded bg-transparent text-dark-brown placeholder-dark-grey focus:outline-none focus:ring-2 focus:ring-primary">
         <textarea name="message" placeholder="How can we help?" required class="w-full p-3 border border-dark-brown rounded min-h-[120px] resize-y bg-transparent text-dark-brown placeholder-dark-grey focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
@@ -138,12 +136,6 @@
   <footer class="bg-dark-brown py-8 text-center text-sm text-light-tan border-t border-secondary">
     <div class="space-y-2">
       <p>© 2025 Muro Consulting Services</p>
-      <!-- Optional: Social links
-      <div class="flex justify-center gap-x-4">
-        <a href="#" class="hover:text-primary transition">LinkedIn</a>
-        <a href="#" class="hover:text-primary transition">Twitter</a>
-      </div>
-      -->
     </div>
   </footer>
 
@@ -153,25 +145,19 @@
       const nav = document.getElementById("mobile-nav");
       nav.classList.toggle("hidden");
     }
-
-    // Auto-close mobile nav on link click
     document.querySelectorAll('#mobile-nav .nav-link').forEach(link => {
       link.addEventListener('click', () => {
         document.getElementById("mobile-nav").classList.add("hidden");
       });
     });
-
-    // Highlight active nav link on scroll
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
-
     window.addEventListener("scroll", () => {
       let current = "";
       sections.forEach(section => {
         const top = section.offsetTop - 120;
         if (window.scrollY >= top) current = section.getAttribute("id");
       });
-
       navLinks.forEach(link => {
         link.classList.remove("text-primary");
         if (link.getAttribute("href").includes(current)) {
@@ -181,34 +167,70 @@
     });
   </script>
 
-  <!-- Contact Form Submission Script -->
+  <!-- Contact Form Submission Script (UPDATED) -->
   <script>
-    document.getElementById('contact-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
+    (function () {
+      const form = document.getElementById('contact-form');
+      const statusDiv = document.getElementById('form-status');
+
+      // Your deployed backend endpoint:
       const apiUrl = 'https://murorangel-backend-a6bjdwhwahcfggf3.canadacentral-01.azurewebsites.net/contact';
 
-      try {
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          body: formData
-        });
-        const result = await response.json();
-        const statusDiv = document.getElementById('form-status');
-        if (result.success) {
-          statusDiv.textContent = 'Message sent successfully!';
-          statusDiv.className = 'mt-4 text-green-400 text-center';
-          form.reset();
-        } else {
-          statusDiv.textContent = 'Error: ' + (result.error || 'Could not send message.');
-          statusDiv.className = 'mt-4 text-red-400 text-center';
-        }
-      } catch (err) {
-        document.getElementById('form-status').textContent = 'Network error. Try again later.';
-        document.getElementById('form-status').className = 'mt-4 text-red-400 text-center';
+      function setStatus(text, ok) {
+        statusDiv.textContent = text;
+        statusDiv.className = 'mt-4 text-center ' + (ok ? 'text-green-400' : 'text-red-400');
       }
-    });
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        // Client-side validity check
+        if (!form.reportValidity()) return;
+
+        const formData = new FormData(form);
+
+        // Prevent double submits
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+
+        // Timeout to avoid hanging if network stalls
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 15000);
+
+        try {
+          const resp = await fetch(apiUrl, {
+            method: 'POST',
+            body: formData,
+            signal: controller.signal
+          });
+          clearTimeout(timer);
+
+          // Try JSON; fallback to text if non-JSON
+          let data, text;
+          try { data = await resp.json(); } catch (_) { text = await resp.text(); }
+
+          if (!resp.ok) {
+            const msg = (data && data.error) ? data.error : (text || `HTTP ${resp.status}`);
+            throw new Error(msg);
+          }
+
+          const ok = data && data.success === true;
+          if (ok) {
+            setStatus('Message sent successfully!', true);
+            form.reset();
+          } else {
+            const msg = (data && data.error) ? data.error : 'Could not send message.';
+            throw new Error(msg);
+          }
+        } catch (err) {
+          setStatus(`Network or server error: ${err.message || err}`, false);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+        }
+      });
+    })();
   </script>
 </body>
 </html>
