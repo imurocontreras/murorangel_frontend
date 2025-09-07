@@ -4,7 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Muro Consulting Services</title>
-  <link rel="icon" type="image/png" href="assets/new_icon.png" />
+
+  <!-- Favicons -->
+  <link rel="icon" href="assets/favicon.ico?v=2" sizes="any">
+  <link rel="icon" type="image/png" href="assets/favicon-32.png?v=2" sizes="32x32">
+  <link rel="icon" type="image/png" href="assets/favicon-16.png?v=2" sizes="16x16">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2" sizes="180x180">
+  <meta name="theme-color" content="#f6eee8">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -64,7 +71,7 @@
 
   <!-- Hero Section -->
   <section id="hero" class="h-screen flex flex-col items-center justify-center text-center px-4 pt-14 md:pt-36 pb-4 md:pb-24 bg-dark-brown">
-    <img src="assets/new_icon.png" alt="Muro Rangel Logo" class="w-20 md:w-28 mx-auto mb-4 md:mb-8" />
+    <img src="assets/landing-icon.png" alt="Muro Rangel Logo" class="w-20 md:w-32 mx-auto mb-4 md:mb-8" />
     <h1 class="text-3xl sm:text-4xl md:text-5xl font-montserrat font-bold text-light-tan mb-2 md:mb-4"></h1>
     <div class="text-secondary text-base md:text-lg tracking-widest font-radley my-4 md:my-6 relative inline-block">
       <span class="before:content-[''] before:inline-block before:w-8 md:before:w-10 before:h-px before:bg-secondary before:mr-2 align-middle"></span>
@@ -167,13 +174,11 @@
     });
   </script>
 
-  <!-- Contact Form Submission Script (UPDATED) -->
+  <!-- Contact Form Submission Script -->
   <script>
     (function () {
       const form = document.getElementById('contact-form');
       const statusDiv = document.getElementById('form-status');
-
-      // Your deployed backend endpoint:
       const apiUrl = 'https://murorangel-backend-a6bjdwhwahcfggf3.canadacentral-01.azurewebsites.net/contact';
 
       function setStatus(text, ok) {
@@ -183,18 +188,13 @@
 
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
-
-        // Client-side validity check
         if (!form.reportValidity()) return;
 
         const formData = new FormData(form);
-
-        // Prevent double submits
         const btn = form.querySelector('button[type="submit"]');
         btn.disabled = true;
         btn.textContent = 'Sending...';
 
-        // Timeout to avoid hanging if network stalls
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), 15000);
 
@@ -206,7 +206,6 @@
           });
           clearTimeout(timer);
 
-          // Try JSON; fallback to text if non-JSON
           let data, text;
           try { data = await resp.json(); } catch (_) { text = await resp.text(); }
 
