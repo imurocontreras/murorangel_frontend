@@ -43,17 +43,15 @@
 </head>
 <body class="bg-light-tan text-dark-grey font-poppins leading-relaxed md:snap-y md:snap-mandatory min-h-screen">
 
-  <!-- Fixed Navbar (Light Tan, Transparent) -->
+  <!-- Fixed Navbar -->
   <nav class="fixed top-0 left-0 w-full bg-light-tan/90 backdrop-blur border-b border-dark-brown/30 z-50 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
       <a href="#hero" class="text-base md:text-lg font-bold text-dark-brown hover:text-primary transition">Home</a>
-      <!-- Desktop Nav -->
       <div class="hidden md:flex gap-6 text-sm font-semibold" id="nav-links">
         <a href="#about" class="nav-link text-dark-brown hover:text-primary transition">About</a>
         <a href="#services" class="nav-link text-dark-brown hover:text-primary transition">Services</a>
         <a href="#contact" class="nav-link text-dark-brown hover:text-primary transition">Contact</a>
       </div>
-      <!-- Mobile Toggle -->
       <button class="md:hidden p-2 rounded hover:bg-dark-brown/10" onclick="toggleMobileNav()" aria-label="Open navigation menu">
         <svg class="w-6 h-6 text-dark-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -61,7 +59,6 @@
         </svg>
       </button>
     </div>
-    <!-- Mobile Nav -->
     <div class="hidden flex-col px-4 pb-4 md:hidden text-sm font-semibold space-y-2 bg-light-tan/95 backdrop-blur" id="mobile-nav">
       <a href="#about" class="nav-link py-2 text-dark-brown hover:text-primary block">About</a>
       <a href="#services" class="nav-link py-2 text-dark-brown hover:text-primary block">Services</a>
@@ -70,24 +67,32 @@
   </nav>
 
   <!-- Hero Section -->
-  <section id="hero" class="min-h-[100svh] flex flex-col items-center justify-center text-center px-4 pt-24 md:pt-36 pb-6 md:pb-24 bg-dark-brown">
+  <section id="hero" class="relative min-h-[100svh] flex flex-col items-center justify-center text-center px-4 pt-24 md:pt-36 pb-6 md:pb-24 bg-dark-brown">
     <img src="assets/landing-icon.png" alt="Muro Rangel Logo" class="w-20 md:w-32 mx-auto mb-4 md:mb-8" />
     <h1 class="sr-only">Muro Consulting Services</h1>
 
-    <!-- Styled divider label -->
     <div class="text-light-tan text-xl sm:text-2xl md:text-4xl tracking-[0.2em] font-radley my-4 md:my-6 relative inline-flex items-center gap-3 md:gap-4">
       <span class="inline-block h-px w-8 md:w-10 bg-light-tan/60"></span>
       <span class="drop-shadow-md">MURO CONSULTING SERVICES</span>
       <span class="inline-block h-px w-8 md:w-10 bg-light-tan/60"></span>
     </div>
 
-    <a href="#contact" class="mt-6 md:mt-8 inline-block bg-primary text-light-tan font-semibold px-8 py-3 rounded-lg hover:bg-accent transition active:scale-[.99]">Contact Us</a>
+    <a href="#about" class="mt-6 md:mt-8 inline-block bg-primary text-light-tan font-semibold px-8 py-3 rounded-lg hover:bg-accent transition active:scale-[.99]">LEARN MORE</a>
+
+    <!-- Scroll Down Arrow -->
+    <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+      <a href="#about" class="animate-bounce text-light-tan hover:text-primary" aria-label="Scroll to About">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </a>
+    </div>
   </section>
 
   <!-- About Section -->
-  <section id="about" class="min-h-screen flex items-center justify-center bg-light-tan pt-28 md:pt-36 pb-12 md:pb-24">
+  <section id="about" class="relative min-h-screen flex items-center justify-center bg-light-tan pt-28 md:pt-36 pb-12 md:pb-24">
     <div class="w-full max-w-xl md:max-w-2xl text-center px-4 space-y-8">
-      <h2 class="text-2xl sm:text-3xl md:text-4xl font-montserrat font-bold text-dark-brown mb-2">About</h2>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-montserrat font-bold text-dark-brown mb-2">About Us</h2>
       <div class="space-y-6 text-left">
         <div>
           <h3 class="text-xl font-montserrat font-bold text-dark-brown mb-2">Mission</h3>
@@ -109,14 +114,21 @@
         </div>
       </div>
     </div>
+
+    <!-- Scroll Down Arrow -->
+    <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+      <a href="#services" class="animate-bounce text-dark-brown hover:text-primary" aria-label="Scroll to Services">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </a>
+    </div>
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="min-h-screen flex items-center justify-center bg-dark-brown pt-28 md:pt-36 pb-12 md:pb-24">
+  <section id="services" class="relative min-h-screen flex items-center justify-center bg-dark-brown pt-28 md:pt-36 pb-12 md:pb-24">
     <div class="w-full max-w-5xl text-center px-4">
       <h2 class="text-2xl sm:text-3xl md:text-4xl font-montserrat font-bold text-light-tan mb-6 md:mb-10">Services</h2>
-
-      <!-- Linked service cards -->
       <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-6">
         <li>
           <a href="business-strategy.html" class="block bg-light-tan text-dark-brown font-semibold px-6 py-5 rounded-xl ring-1 ring-secondary/40 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition">
@@ -134,21 +146,29 @@
           </a>
         </li>
       </ul>
-
       <p class="text-light-tan/80 text-sm md:text-base">
         Focused engagements that reduce complexity and accelerate growth.
       </p>
     </div>
+
+    <!-- Scroll Down Arrow -->
+    <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+      <a href="#contact" class="animate-bounce text-light-tan hover:text-primary" aria-label="Scroll to Contact">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </a>
+    </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="min-h-screen flex items-center justify-center bg-light-tan pt-28 md:pt-36 pb-12 md:pb-24">
+  <section id="contact" class="relative min-h-screen flex flex-col items-center justify-center bg-light-tan pt-28 md:pt-36 pb-12 md:pb-24">
     <div class="w-full max-w-xl md:max-w-2xl text-center px-4 space-y-8">
       <h2 class="text-2xl sm:text-3xl md:text-4xl font-montserrat font-bold text-dark-brown mb-2">Contact</h2>
       <p class="text-dark-grey mb-4 md:mb-6">
         Get in touch by
-        <a href="mailto:customersupport@muroservices.com" class="text-primary underline"></a>
-        using the form below.
+        <a href="mailto:customersupport@muroservices.com" class="text-primary underline">email</a>
+        or using the form below.
       </p>
       <form id="contact-form" class="text-left space-y-4" novalidate>
         <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 border border-dark-brown/60 rounded bg-white text-dark-brown placeholder-dark-grey focus:outline-none focus:ring-2 focus:ring-primary">
@@ -157,6 +177,16 @@
         <button type="submit" class="bg-primary text-light-tan font-semibold px-6 py-3 rounded-lg hover:bg-accent transition w-full md:w-auto active:scale-[.99]">Send Message</button>
       </form>
       <div id="form-status" class="mt-4 text-center"></div>
+    </div>
+
+    <!-- Return to Top -->
+    <div class="mt-12 text-center">
+      <a href="#hero" class="inline-flex items-center gap-2 text-primary hover:text-accent font-semibold">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+        Back to Top
+      </a>
     </div>
   </section>
 
@@ -167,7 +197,7 @@
     </div>
   </footer>
 
-  <!-- Script: Toggle + Active Link + Mobile Nav Auto-close -->
+  <!-- Scripts -->
   <script>
     function toggleMobileNav() {
       const nav = document.getElementById("mobile-nav");
